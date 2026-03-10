@@ -1,13 +1,14 @@
 # Deploy a AWS Secure Mesh Site v2 in F5 Distributed Cloud
 
 ## Create a SMSv2 CE in F5XC
+This is an API example of how to create an AWS SMSv2 CE site using cURL or EchoAPI
 
 ```bash
 curl --request POST \
   --url https://training1.console.ves.volterra.io/api/config/namespaces/system/securemesh_site_v2s \
   --header 'Accept: */*' \
   --header 'Accept-Encoding: gzip, deflate, br' \
-  --header 'Authorization: APIToken GSGL4qIEfPfs39wT35TOvHE90yM=' \
+  --header 'Authorization: APIToken xxxxxxxxxxxxxxxxxxxxxxxx \
   --header 'Connection: keep-alive' \
   --header 'Content-Type: application/json' \
   --header 'User-Agent: EchoapiRuntime/1.1.0' \
@@ -73,75 +74,20 @@ curl --request POST \
 
 ```
 
-## Generate Node Token
-In the Distributed CLoud COnsole, select the Multi-Cloud Network Connect workspace
-Navigate to Manage > Site Management > Secure Mesh Sites v2
-For your Site, click the Action icon (...) > Generate Node Token
-Click Copy cloud-init
-Save the value to a text file locally as cloud-init.txt.
-Click Close
-Generate one token per node you deploy.
-
-## Install AWS CLI to your Home Directory
-Since CloudShell resets its system directories, you must install the CLI in $HOME for persistence
-
-```bash
-# Create a local bin directory if it doesn't exist
-mkdir -p ~/bin
-
-# Download and unzip the AWS CLI
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-
-# Install to your home directory
-./aws/install -i ~/aws-cli -b ~/bin
-
-# Add to your path permanently
-echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
-source ~/.bashrc
-
-# Verify installation
-aws --version
-
-```
-
 ## Configure AWS Credentials
 Run the interactive configuration to link your AWS IAM user
 
 ```bash
 aws configure
 ```
+Log in to your AWS Access Portal and obtain short-lived access credentials to use below:
+
 AWS Access Key ID: [Your Key]
 AWS Secret Access Key: [Your Secret]
 AWS Session Token [Node]: [Your Session Token]
 Default region name: us-east-1 (or your preferred region)
 Default output format: json
 
-
-## Provision AWS Resources for F5 SMSv2 CE Site with AWSCLI script
-
-In this scenario, a dual interface single node CE site is being deployed. Since the site has two interfaces, two subnets are required. One for SLI and the other for SLO. Both subnets are in te same AWS AZ. In this example, us-east-1a is the AZ where the SLI and SLO subnets are located.
-
-The following resources need to be provisioned in your AWS tenant, in order to proceed to the next phase of the CE site configuration:
-VPC
-Two Subnets (SLO and SLI)
-Internet Gateway attached to VPC
-Route Tables
-Security Group with Inbound rules
-SSH Key Pair
-
-To simplify the process, the aws_deploy_improved.sh script will be used to automate the process of provisioning these resources and destroying them when they are no longer needed.
-
-To provision the resources, run the command:
-
-```bash
-./aws_deploy_improved.sh deploy
-```
-To destroy the resources when they are no longer needed, run the command:
-
-```bash
-./aws_deploy_improved.sh destroy
-```
 
 ## Provision AWS Resources for F5 SMSv2 CE site using Terraform
 To provision the required AWS resources using Terraform, See the following steps:
@@ -194,20 +140,23 @@ The actual values are set in terraform.tfvars (see that file).
   - Remember that the **terraform.tfvars** file is sensitive and should be added to your **.gitignore file** if using Git. 
 
 4. Run Terraform Commands 
-  - Initialize the terraform directory
+  - Initialize the terraform directory and download providers
   ```bash
   terraform init
   ```
 
-  - Terraform Plan
+  - Preview what will be created - no changes are made yet
   ```bash
   terraform plan
   ```
-    - Terraform apply
+
+    - Create the resources
   ```bash
   terraform apply
   ```
-
+  After a successful apply, Terraform prints your outputs - including the SSH command to connect to the instance
+  
+  
 5. Verify CE Site Registration 
 After you deploy your nodes, they automatically register as a CE Site in Distributed Cloud Console. The registration process is not instantaneous. In Console, the status changes from Waiting for Registration to Provisioning to Online. Wait a few minutes for the registration process to begin after completing the preceding sections.
 
@@ -216,13 +165,20 @@ After you deploy your nodes, they automatically register as a CE Site in Distrib
 - Select your CE Site. The Dashboard tab should clearly show that the CE Site has registered successfully with the System Health of 100% as well as Data Plane/Control Plane both Up.
 
 
-
 ## Post Deployment COnfiguration (Optional)
 After your CE site registers successfully, you may need to add additional network interfaces to meet your requirements. 
 Ensure that you connect another network interface to the node VM
 
 ### Stop Source/Destination Checks
+More detail to follow shortly.........
 
+## Destroy AWS SMSv2 CE Site (tear everything down)
+```bash
+terraform destroy
+```
 
-## Destroy AWS SMSv2 CE Site
+Terraform will show you every resource it will delete and ask for confirmation.
+
+## Change the region
+If you deploy to a different region, you must also update 'ami_id' in 'terraform.tfvars' - AMI IDs are region specific. A lookup table is in 'variables.tf'
  
