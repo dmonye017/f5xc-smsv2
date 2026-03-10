@@ -82,11 +82,11 @@ aws configure
 ```
 Log in to your AWS Access Portal and obtain short-lived access credentials to use below:
 
-AWS Access Key ID: [Your Key]
-AWS Secret Access Key: [Your Secret]
-AWS Session Token [Node]: [Your Session Token]
-Default region name: us-east-1 (or your preferred region)
-Default output format: json
+- AWS Access Key ID: [Your Key]
+- AWS Secret Access Key: [Your Secret]
+- AWS Session Token [Node]: [Your Session Token]
+- Default region name: us-east-1 (or your preferred region)
+- Default output format: json
 
 
 ## Provision AWS Resources for F5 SMSv2 CE site using Terraform
