@@ -157,7 +157,8 @@ The actual values are set in terraform.tfvars (see that file).
   After a successful apply, Terraform prints your outputs - including the SSH command to connect to the instance
   
   
-5. Verify CE Site Registration 
+5. Verify CE Site Registration:
+ 
 After you deploy your nodes, they automatically register as a CE Site in Distributed Cloud Console. The registration process is not instantaneous. In Console, the status changes from Waiting for Registration to Provisioning to Online. Wait a few minutes for the registration process to begin after completing the preceding sections.
 
 - In Distributed Cloud Console, navigate to Multi-Cloud Network Connect > Overview > Infrastructure > Sites.
