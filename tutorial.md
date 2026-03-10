@@ -150,7 +150,7 @@ The actual values are set in terraform.tfvars (see that file).
   terraform plan
   ```
 
-    - Create the resources
+  - Create the resources
   ```bash
   terraform apply
   ```
