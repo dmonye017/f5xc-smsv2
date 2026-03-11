@@ -16,6 +16,11 @@
 ## Install AWS CLI to your Home Directory
 Since CloudShell resets its system directories, you must install the CLI in $HOME for persistence
 
+## Switch to the $HOME directory
+```bash
+cd ~
+```
+
 ## Create a local bin directory if it doesn't exist
 ```bash
 mkdir -p ~/bin
