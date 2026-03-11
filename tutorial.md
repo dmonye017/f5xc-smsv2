@@ -13,6 +13,29 @@
 - Click **Add Secure Mesh Site**
 
 
+## Install AWS CLI to your Home Directory
+Since CloudShell resets its system directories, you must install the CLI in $HOME for persistence
+
+```bash
+# Create a local bin directory if it doesn't exist
+mkdir -p ~/bin
+
+# Download and unzip the AWS CLI
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+
+# Install to your home directory
+./aws/install -i ~/aws-cli -b ~/bin
+
+# Add to your path permanently
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify installation
+aws --version
+
+```
+
 ## Configure AWS Credentials
 Open a terminal and run the interactive configuration to link your AWS IAM user
 ```bash
