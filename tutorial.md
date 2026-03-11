@@ -1,102 +1,44 @@
 # Deploy a AWS Secure Mesh Site v2 in F5 Distributed Cloud
 
-## Create a SMSv2 CE in F5XC
-This is an API example of how to create an AWS SMSv2 CE site using cURL or EchoAPI
 
-```bash
-curl --request POST \
-  --url https://training1.console.ves.volterra.io/api/config/namespaces/system/securemesh_site_v2s \
-  --header 'Accept: */*' \
-  --header 'Accept-Encoding: gzip, deflate, br' \
-  --header 'Authorization: APIToken xxxxxxxxxxxxxxxxxxxxxxxx \
-  --header 'Connection: keep-alive' \
-  --header 'Content-Type: application/json' \
-  --header 'User-Agent: EchoapiRuntime/1.1.0' \
-  --data '{
-  "metadata": {
-    "name": "student102-aws-smsv2"
-  },
-  "spec": {
-    "aws": {
-      "not_managed": {}
-    },
-    "no_network_policy": {},
-    "no_forward_proxy": {},
-    "software_settings": {
-      "sw": {
-        "default_sw_version": {}
-      },
-      "os": {
-        "default_os_version": {}
-      }
-    },
-    "upgrade_settings": {
-      "kubernetes_upgrade_drain": {
-        "enable_upgrade_drain": {
-          "drain_node_timeout": 300,
-          "drain_max_unavailable_node_count": 1,
-          "disable_vega_upgrade_mode": {}
-        }
-      }
-    },
-    "logs_streaming_disabled": {},
-    "block_all_services": {},
-    "performance_enhancement_mode": {
-      "perf_mode_l7_enhanced": {}
-    },
-    "disable_url_categorization": {},
-    "offline_survivability_mode": {
-      "no_offline_survivability_mode": {}
-    },
-    "tunnel_dead_timeout": 0,
-    "load_balancing": {
-      "vip_vrrp_mode": "VIP_VRRP_ENABLE"
-    },
-    "no_s2s_connectivity_sli": {},
-    "no_s2s_connectivity_slo": {},
-    "local_vrf": {
-      "default_config": {},
-      "default_sli_config": {}
-    },
-    "tunnel_type": "SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL",
-    "re_select": {
-      "geo_proximity": {}
-    },
-    "disable_ha": {},
-    "f5_proxy": {},
-    "no_proxy_bypass": {},
-    "dns_ntp_config": {
-      "f5_dns_default": {},
-      "f5_ntp_default": {}
-    }
-  }
-}'
+## Create a SMSv2 CE site object in F5XC
+- Log into your F5 Distributed Cloud tenant
+- In the F5 Distributed Cloud Console, select the **Multi-Cloud Network Connect** workspace and go to **Site Management** > **Customer Edge** > **Secure Mesh Sites v2**
+- Click **Add Secure Mesh Site**
+- Create a smsv2 site using the following details:
+  - Name: **studentx-aws-smsv2**
+  - Provider: **AWS**
+  - High Availability: **Disable**
+  - Leave all other settings as default
+- Click **Add Secure Mesh Site**
 
-```
 
 ## Configure AWS Credentials
-Run the interactive configuration to link your AWS IAM user
-
+Open a terminal and run the interactive configuration to link your AWS IAM user
 ```bash
 aws configure
 ```
 Log in to your AWS Access Portal and obtain short-lived access credentials to use below:
 
-- AWS Access Key ID: [Your Key]
-- AWS Secret Access Key: [Your Secret]
-- AWS Session Token [Node]: [Your Session Token]
-- Default region name: us-east-1 (or your preferred region)
-- Default output format: json
+- **AWS Access Key ID**: [Your Key]
+- **AWS Secret Access Key**: [Your Secret]
+- **AWS Session Token [Node]**: [Your Session Token]
+- **Default region name**: us-east-1 (or your preferred region)
+- **Default output format**: json
 
 
 ## Provision AWS Resources for F5 SMSv2 CE site using Terraform
 To provision the required AWS resources using Terraform, See the following steps:
-1. Navigate to the **terraform** directory using the command: 
+1. Clone the Github repository used for this test deployment:
+   ```bash
+   git clone https://github.com/dmonye017/f5xc-smsv2
+   ```
+2. Navigate to the **terraform** directory using the command: 
   ```bash
-  cd /home/monye_test/f5xc-smsv2/terraform
+  cd /home/test/f5xc-smsv2/terraform   
   ```
 
-2. Review the terraform configuration files listed as follows: **main.tf**, **variables.tf**, **outputs.tf**, **cloud_init.tf**, **user_data.tpl** and **terraform.tfvars**
+3. Review the terraform configuration files listed as follows: **main.tf**, **variables.tf**, **outputs.tf**, **cloud_init.tf**, **user_data.tpl** and **terraform.tfvars**
 
 **main.tf** - This file provisions the following resources in order:
 - VPC
@@ -131,7 +73,7 @@ The token value needs to be **copied** and saved securely, as this will be used 
 These define WHAT values the configuration accepts.
 The actual values are set in terraform.tfvars (see that file).
 
-3. Before you deploy using the terraform configuration files
+4. Before you deploy using the terraform configuration files
   - Generate the Node token and copy the cloud-init file into the user_data.tpl file
   - select the token value in the user_data.tpl file and enter it into the **terraform.tfvars** file for the f5_registration_token variable
   - Locate AMI ID for your region by navigating to AWS Marketplace > Manage Subscriptions > f5 Distributed Cloud CE BYOL and click launch instance. select Launch on Ec2 console and view the list of AMIs per region on the AMI details section. You can choose the appropriate AMI ID based on the AWS Region you wish to use to deploy your CE node.
@@ -139,7 +81,7 @@ The actual values are set in terraform.tfvars (see that file).
   - Ensure other required variable values have been appropriately updated in the **terraform.tfvars** file.
   - Remember that the **terraform.tfvars** file is sensitive and should be added to your **.gitignore file** if using Git. 
 
-4. Run Terraform Commands 
+5. Run Terraform Commands 
   - Initialize the terraform directory and download providers
   ```bash
   terraform init
@@ -157,7 +99,7 @@ The actual values are set in terraform.tfvars (see that file).
   After a successful apply, Terraform prints your outputs - including the SSH command to connect to the instance
   
   
-5. Verify CE Site Registration:
+6. Verify CE Site Registration:
  
 After you deploy your nodes, they automatically register as a CE Site in Distributed Cloud Console. The registration process is not instantaneous. In Console, the status changes from Waiting for Registration to Provisioning to Online. Wait a few minutes for the registration process to begin after completing the preceding sections.
 
