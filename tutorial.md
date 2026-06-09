@@ -1,4 +1,4 @@
-# Deploy a AWS Secure Mesh Site v2 in F5 Distributed Cloud
+# Deploy a AWS Secure Mesh Site v2 in F5 Distributed Cloud using Terraform
 
 ## Create a SMSv2 CE site object in F5XC
 - Log into your F5 Distributed Cloud tenant
