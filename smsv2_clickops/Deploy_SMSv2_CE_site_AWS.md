@@ -23,7 +23,7 @@
 ########################################################################################################
 
 **2. Provision AWS resources for the SMSv2 CE site**    
-- In the AWS Management Console, implement the following infrastructure:
++ In the AWS Management Console, implement the following infrastructure:
     - Create a new VPC (or use an existing one) with at least two subnets in the same availability zone
     - The two subnets can be named as follows:
         - studentx-slo (public subnet)
@@ -37,13 +37,13 @@
 
 
 # Infrastructure Diagram                    
-    VPC             Subnets         Route Tables         Network Connections 
+    VPC               Subnets         Route Tables         Network Connections 
                     
                     studentx-slo    studentx-slo-rt
     studentx-vpc                                            studentx-igw
                     studentx-sli    studentx-sli-rt  
 
-#############################################################################################################
+###########################################################################################################
 
 **3. Generate the Node token for the SMSv2 CE site in F5 Distributed Cloud**
 - In the F5 Distributed Cloud Console, navigate to **Multi-Cloud Network Connect** > **Site Management** > **Secure Mesh Sites v2**
@@ -54,7 +54,7 @@
 ###########################################################################################################
 
 **4. Deploy the SMSv2 CE site in AWS**
-- In the AWS Management Console, navigate to EC2 > Instances and click **Launch Instance**
+- In the AWS Management Console, navigate to **EC2 > Instances** and click **Launch Instance**
 - Configure the instance with the following details:
     - Name: **studentx-aws-smsv2**
     - Application and OS Images: Select the F5 Distributed Cloud SMSv2 CE site AMI for your region
@@ -83,7 +83,7 @@
     - Click **Launch** to launch the instance
 
 
-5. Allocate and Associate an Elastic IP address to SMSv2 CE site public interface
+**5. Allocate and Associate an Elastic IP address to SMSv2 CE site public interface**
     - In the AWS Management Console, navigate to **EC2 > Instances** and select the checkbox next to your newly created CE instance
     - Go to the Networking tab and expand Network Interfaces and check which of the ENI IDs is mapped to the public interface (Network Interface 0) of the instance (e.g., eni-xxxxxxxxxxxx)
         - You can identify the ENI mapping by checking the subnet ID to verify if it matches the public subnet you selected during the instance deployment (studentx-slo for example)
@@ -92,8 +92,8 @@
     - Under Association details, click the Elastic IP address drop-down and select the Elastic IP address you allocated for the CE site in step 2 
     - Click **Associate** to associate the Elastic IP address with the ENI and complete the Elastic IP association process
 
-6. Verify the SMSv2 CE site deployment in F5 Distributed Cloud Console
+**6. Verify the SMSv2 CE site deployment in F5 Distributed Cloud Console**
     - After the instance is rebooted in AWS, go back to the F5 Distributed Cloud Console and navigate to **Multi-Cloud Network Connect** > **Site Management** > **Secure Mesh Sites v2**
-    - The **Site Admin State** should show as **Provisioning**" while the CE site is being deployed and provisioned in AWS. Once the deployment is complete, the Site Admin State should change to **Online**, indicating that the SMSv2 CE site is successfully deployed and connected to F5 Distributed Cloud. You can also click on the site name (studentx-aws-smsv2 for example) to view more details about the site, including the node status and network interfaces.    
+    - The **Site Admin State** should show as **Provisioning**" while the CE site is being deployed and provisioned in AWS. Once the deployment is complete, the Site Admin State should change to **Online**, indicating that the SMSv2 CE site is      successfully deployed and connected to F5 Distributed Cloud. You can also click on the site name (studentx-aws-smsv2 for example) to view more details about the site, including the node status and network interfaces.    
 
-Congratulations! You have successfully deployed an F5 Distributed Cloud Secure Mesh Site v2 in AWS using ClickOps. You can now proceed to configure the site and establish network connections as needed.
+**Congratulations!** You have successfully deployed an F5 Distributed Cloud Secure Mesh Site v2 in AWS using ClickOps. You can now proceed to configure the site and establish network connections as needed.
