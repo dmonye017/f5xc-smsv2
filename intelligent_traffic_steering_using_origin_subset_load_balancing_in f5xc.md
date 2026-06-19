@@ -16,7 +16,7 @@ Simply put, it's conditional endpoint selection within a pool, driven by request
 - A geolocation key label for the origin servers (e.g., Japan, US, Europe) to enable geolocation-based routing
 - Three origin servers (e.g., web servers) hosting your application in three different regions.
 
-### Create a Geolocation Key Label for each origin server
+### Step 1: Create a Geolocation Key Label for each origin server
 1. Log into your F5 Distributed Cloud tenant.
 2. In the F5 Distributed Cloud Console, navigate to the **Shared Configuration** > **Labels** > **Known Keys**.
 3. Click **Add Known Key** and specify the following details: 
@@ -26,9 +26,9 @@ Simply put, it's conditional endpoint selection within a pool, driven by request
     - Label Value 3: **Virginia**
 4. Click **Add Key** to create the geolocation key label.
 
-### Create an Origin Pool for the HTTP Load Balancer
+### Step 2: Create an Origin Pool for the HTTP Load Balancer
 1. In the F5 Distributed Cloud Console, navigate to **Multi-Cloud App Connect** > **Load Balancers** > **Origin Pools**.
-2. Select "Add Origin Pool" and specify the following details:
+2. Select **Add Origin Pool** and specify the following details:
    - Name: **arcadia-gs-op1**
    - In the **Origin Servers** section, click **Add Origin Server** to add each of the three origin servers with their respective public IP addresses and geolocation labels.
    - Specify the following details for each origin server:
@@ -53,14 +53,14 @@ Simply put, it's conditional endpoint selection within a pool, driven by request
 6. In the **Origin Server Subsets** section, select **Enable Subset Load Balancing** and click **Configure** to specify the following details:
    - In the **Origin Server Subset Classes** section, click **Add-Item**
    - Under **List of keys for subnet**, enter your key label from Step 2: **arc-geolocation**
-   - Click Apply to add the key label 
+   - Click **Apply** to add the key label 
 7. In the **Subset Fallback Policy** section, choose the **Select Any Origin Server** option to allow the load balancer to select any available healthy origin server if no matching subset is found.
 8. Click **Apply** twice to save the configuration and return to the **Other Settings** section of the Origin Pool configuration.
 9. Click **Add Origin Pool** to save the origin pool configuration.
 
-### Create an HTTP Load Balancer
+### Step 3: Create an HTTP Load Balancer
 1. In the F5 Distributed Cloud Console, navigate to **Multi-Cloud App Connect** > **Load Balancers** > **HTTP Load Balancers**.
-2. Select "Add HTTP Load Balancer" and specify the following details:
+2. Select **Add HTTP Load Balancer** and specify the following details:
    - Name: **arcadia-gs-hlb1**
    - Domains: **arcadia.f5training1.cloud**
    - In the **Load Balancer Type** section, check all appropriate options.
@@ -72,7 +72,7 @@ Simply put, it's conditional endpoint selection within a pool, driven by request
    - For Subset Rule1, specify the following details:; 
           - Name: **eu-traffic**
           - Action: Select **Add-Label** Key: **arc-geolocation** > London
-          - In the **Clients* section, select **Client Selector Match** > **Group of Clients by Label Selector** > **geoip.ves.io/country** > **GB**
+          - In the **Clients** section, select **Client Selector Match** > **Group of Clients by Label Selector** > **geoip.ves.io/country** > **GB**
           - Click **Apply** to save the configuration for the first subset rule.
     - For Subset Rule2, specify the following details:
           - Name: **us-traffic**
