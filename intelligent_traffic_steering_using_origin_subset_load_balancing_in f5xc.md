@@ -58,7 +58,7 @@ Simply put, it's conditional endpoint selection within a pool, driven by request
 8. Click **Apply** twice to save the configuration and return to the **Other Settings** section of the Origin Pool configuration.
 9. Click **Add Origin Pool** to save the origin pool configuration.
 
-### Step 3: Create an HTTP Load Balancer
+### Step 3: Create a HTTP Load Balancer
 1. In the F5 Distributed Cloud Console, navigate to **Multi-Cloud App Connect** > **Load Balancers** > **HTTP Load Balancers**.
 2. Select **Add HTTP Load Balancer** and specify the following details:
    - Name: **arcadia-gs-hlb1**
